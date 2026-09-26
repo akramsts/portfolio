@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Akram — Software Developer</title>
+  <meta name="description" content="Akram is a solo web & Android developer who ships complete products end-to-end — including Browser, a privacy-first PWA, the Gree Runner game, and the Android apps VSearch and VSave.">
+  <meta name="theme-color" content="#0b0c14">
+  <meta property="og:title" content="Akram — Software Developer">
+  <meta property="og:description" content="Solo web & Android developer who ships complete products end-to-end — Browser, Gree Runner, VSearch, and VSave.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b0c14'/%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ff6a3d'/%3E%3Cstop offset='1' stop-color='%23ffc23c'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M14 36 L46 14 L36 50 L27 34 Z' fill='url(%23g)'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<section class="hero wrap">
+  <div class="glow g1"></div>
+  <div class="glow g2"></div>
+  <div class="hero-inner">
+    <div class="eyebrow"><span class="dot"></span> Available for work</div>
+    <h1>Akram builds<br>software that <span class="accent">ships.</span></h1>
+    <p>Web apps, Android apps, and Windows builds — bringing ideas to life and releasing them seamlessly across platforms. No half-finished projects, only production-ready software.</p>
+
+    <div class="stat-row">
+      <akram-pill num="4" lbl="Shipped Projects"></akram-pill>
+      <akram-pill num="3" lbl="Platforms Supported"></akram-pill>
+      <akram-pill num="1" lbl="Solo Developer"></akram-pill>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <section id="about">
+    <div class="section-head">
+      <p class="section-tag">About</p>
+      <h2 class="section-title">Solo builder, full pipeline.</h2>
+    </div>
+    <p class="about-text">I design and build complete products end-to-end — from the user interface someone taps, to the offline caching mechanisms, and finally to the packaged app they install. Browser, the flagship project of this portfolio, is a PWA I designed, built, and shipped entirely on my own. It integrates search, theming, local history, and full offline support into one coherent product, rather than a pile of disconnected features.</p>
+    <p class="about-text">I believe in taking a single idea and executing it flawlessly across multiple platforms over leaving projects half-finished. Gree Runner, for example, exists as a playable web game, an Android APK, and a Windows installer — the same game, three real releases, unified by one codebase.</p>
+    <div class="skills">
+      <span>HTML5</span>
+      <span>CSS3</span>
+      <span>JavaScript</span>
+      <span>PWA &amp; Service Workers</span>
+      <span>Android (APK Builds)</span>
+      <span>Windows Packaging</span>
+      <span>Git &amp; GitHub</span>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="section-head">
+      <p class="section-tag">Selected work</p>
+      <h2 class="section-title">Four releases, three platforms.</h2>
+    </div>
+
+    <div class="project p-browser">
+      <div class="proj-visual">
+        <svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><circle cx="50" cy="50" r="38" stroke="#ff6a3d" stroke-width="6"/><path d="M50 20 L58 50 L50 80 L42 50 Z" fill="#ff6a3d"/><circle cx="50" cy="50" r="8" fill="#0b0c14" stroke="#f4f2ee" stroke-width="3"/></svg>
+      </div>
+      <div class="proj-body">
+        <div class="proj-platform">WEB · PWA</div>
+        <p class="proj-name">Browser</p>
+        <p class="proj-desc">A privacy-first start page featuring instant search across seven engines, local history, light/dark theming, voice search, and comprehensive offline support via a service worker. Fully installable as a standalone app.</p>
+        <div class="proj-links">
+          <a href="https://akramsts.github.io/browser/" target="_blank" rel="noopener noreferrer">Live site</a>
+          <a href="https://github.com/akramsts/browser" target="_blank" rel="noopener noreferrer" class="secondary">Source →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project p-runner">
+      <div class="proj-visual">
+        <svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><rect x="18" y="18" width="64" height="64" rx="14" stroke="#7c6cff" stroke-width="6"/><path d="M38 62 L38 38 L62 50 Z" fill="#7c6cff"/></svg>
+      </div>
+      <div class="proj-body">
+        <div class="proj-platform">WEB · ANDROID · WINDOWS</div>
+        <p class="proj-name">Gree Runner</p>
+        <p class="proj-desc">A 2D endless runner deployed three ways from a single codebase. Playable instantly in the browser, or installable as a native Android APK and Windows build.</p>
+        <div class="proj-links">
+          <a href="https://akramsts.github.io/web-game/" target="_blank" rel="noopener noreferrer">Play now</a>
+          <a href="https://akramsts.github.io/browser/downloads.html" target="_blank" rel="noopener noreferrer" class="secondary">All downloads →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project p-vsearch">
+      <div class="proj-visual">
+        <svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><circle cx="44" cy="44" r="26" stroke="#3ddc97" stroke-width="6"/><line x1="63" y1="63" x2="82" y2="82" stroke="#3ddc97" stroke-width="6" stroke-linecap="round"/></svg>
+      </div>
+      <div class="proj-body">
+        <div class="proj-platform">ANDROID</div>
+        <p class="proj-name">VSearch</p>
+        <p class="proj-desc">A companion Android utility application, engineered and distributed as a standalone APK release for enhanced user workflows.</p>
+        <div class="proj-links">
+          <a href="https://akramsts.github.io/browser/apps.html" target="_blank" rel="noopener noreferrer">Download</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project p-vsave">
+      <div class="proj-visual">
+        <svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><path d="M28 20 H72 V80 L50 66 L28 80 Z" stroke="#ffc23c" stroke-width="6" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="proj-body">
+        <div class="proj-platform">ANDROID</div>
+        <p class="proj-name">VSave</p>
+        <p class="proj-desc">A robust Android utility app, developed and released alongside VSearch as a directly installable APK.</p>
+        <div class="proj-links">
+          <a href="https://akramsts.github.io/browser/apps.html" target="_blank" rel="noopener noreferrer">Download</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="contact-card">
+      <h2>Let's build something great.</h2>
+      <p>Currently open to freelance opportunities, collaborative projects, or a full-time role.</p>
+      <div class="contact-links">
+        <a href="mailto:mdakramhelloemail@gmail.com">Email me</a>
+        <a href="https://github.com/akramsts" target="_blank" rel="noopener noreferrer" class="ghost">GitHub →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>&copy; <span id="current-year"></span> Akram — Crafted with HTML, CSS &amp; JavaScript</footer>
+</div>
+
+<script src="akram-pill.js"></script>
+<script src="main.js"></script>
+
+</body>
+</html>
