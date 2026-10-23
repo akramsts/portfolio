@@ -1,0 +1,39 @@
+html {
+  scroll-behavior: smooth;
+}
+
+.hero-inner {
+  opacity: 0;
+  animation: rise 0.8s ease forwards 0.1s;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 680px), (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  .hero-inner {
+    opacity: 1;
+    animation: none;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}

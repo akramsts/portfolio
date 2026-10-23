@@ -1,37 +1,85 @@
 class AkramPill extends HTMLElement {
+  static get observedAttributes() {
+    return ['num', 'lbl', 'fill', 'stroke', 'num-color', 'lbl-color', 'height'];
+  }
+
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
+    this.pillEl = null;
+    this.numEl = null;
+    this.lblEl = null;
+    this.resizeObserver = null;
+    this.sizes = {};
   }
 
   connectedCallback() {
+    this.loadFonts();
+    this.sizes = {};
     this.render();
 
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(() => this.drawPill());
-    } else {
-      requestAnimationFrame(() => this.drawPill());
-    }
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        var box = entry.borderBoxSize && entry.borderBoxSize[0];
+        var target = entry.target;
+        var w = box ? box.inlineSize : target.offsetWidth;
+        var h = box ? box.blockSize : target.offsetHeight;
 
-    this.handleResize = () => this.drawPill();
-    window.addEventListener("resize", this.handleResize);
+        if (target === this.numEl) this.sizes.num = w;
+        else if (target === this.lblEl) this.sizes.lbl = w;
+        else this.sizes.h = h;
+      });
+      this.drawPill();
+    });
+
+    this.resizeObserver.observe(this.numEl);
+    this.resizeObserver.observe(this.lblEl);
+    this.resizeObserver.observe(this.pillEl);
   }
 
   disconnectedCallback() {
-    window.removeEventListener("resize", this.handleResize);
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
+      this.resizeObserver = null;
+    }
+  }
+
+  attributeChangedCallback(name) {
+    if (!this.pillEl) return;
+
+    if (name === 'num' || name === 'lbl') {
+      this.updateText();
+    } else {
+      this.applyOptions();
+    }
+  }
+
+  loadFonts() {
+    if (document.getElementById('akram-pill-fonts')) return;
+    var link = document.createElement('link');
+    link.id = 'akram-pill-fonts';
+    link.rel = 'stylesheet';
+    link.href = 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500&family=Inter:wght@400&display=swap';
+    document.head.appendChild(link);
   }
 
   render() {
-    const num = this.getAttribute('num') || '';
-    const lbl = this.getAttribute('lbl') || '';
-
     this.shadowRoot.innerHTML = `
       <style>
+        :host {
+          display: inline-block;
+          vertical-align: middle;
+        }
+
+        :host([hidden]) {
+          display: none;
+        }
+
         .stat-pill {
           position: relative;
-          display: inline-flex;
+          display: flex;
           align-items: stretch;
-          height: 42px;
+          height: var(--h, 42px);
         }
 
         .stat-pill svg.shape {
@@ -42,8 +90,15 @@ class AkramPill extends HTMLElement {
           overflow: visible;
         }
 
+        .stat-pill svg.shape path {
+          fill: var(--fill, var(--akram-pill-fill, transparent));
+          stroke: var(--stroke, var(--akram-pill-stroke, currentColor));
+          stroke-width: var(--akram-pill-stroke-width, 1);
+        }
+
         .stat-pill .num,
         .stat-pill .lbl {
+          box-sizing: border-box;
           position: relative;
           z-index: 1;
           height: 100%;
@@ -56,36 +111,77 @@ class AkramPill extends HTMLElement {
 
         .stat-pill .num {
           padding: 0 20px;
-          font-family: "Space Grotesk", sans-serif;
-          font-size: 22px;
+          font-family: "Space Grotesk", system-ui, sans-serif;
+          font-size: var(--num-size, 22px);
           font-weight: 500;
-          color: #ffffff;
+          color: var(--num-color, var(--akram-pill-num-color, #ffffff));
         }
 
         .stat-pill .lbl {
           padding: 0 18px;
-          font-family: "Inter", sans-serif;
-          font-size: 20px;
+          font-family: "Inter", system-ui, sans-serif;
+          font-size: var(--lbl-size, 20px);
           font-weight: 400;
           line-height: 1.3;
-          color: #ffffff;
+          color: var(--lbl-color, var(--akram-pill-lbl-color, #ffffff));
           opacity: 0.85;
         }
 
         @media (max-width: 680px) {
-          .stat-pill { height: 38px; }
-          .stat-pill .num { font-size: 18px; padding: 0 16px; }
-          .stat-pill .lbl { font-size: 16px; padding: 0 14px; }
+          .stat-pill { height: var(--h, 38px); }
+          .stat-pill .num { font-size: var(--num-size, 18px); padding: 0 16px; }
+          .stat-pill .lbl { font-size: var(--lbl-size, 16px); padding: 0 14px; }
         }
       </style>
-      <div class="stat-pill">
-        <svg class="shape" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path fill="none" stroke="#ffffff" stroke-width="1"/>
+      <div class="stat-pill" part="pill">
+        <svg class="shape" part="shape" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path/>
         </svg>
-        <div class="num">${num}</div>
-        <div class="lbl">${lbl}</div>
+        <div class="num" part="num"></div>
+        <div class="lbl" part="lbl"></div>
       </div>
     `;
+
+    this.pillEl = this.shadowRoot.querySelector('.stat-pill');
+    this.numEl = this.shadowRoot.querySelector('.num');
+    this.lblEl = this.shadowRoot.querySelector('.lbl');
+    this.updateText();
+    this.applyOptions();
+  }
+
+  updateText() {
+    this.numEl.textContent = this.getAttribute('num') || '';
+    this.lblEl.textContent = this.getAttribute('lbl') || '';
+  }
+
+  applyOptions() {
+    var pill = this.pillEl;
+    var colorVars = {
+      'fill': '--fill',
+      'stroke': '--stroke',
+      'num-color': '--num-color',
+      'lbl-color': '--lbl-color'
+    };
+
+    Object.keys(colorVars).forEach((attr) => {
+      var value = this.getAttribute(attr);
+      if (value) {
+        pill.style.setProperty(colorVars[attr], value);
+      } else {
+        pill.style.removeProperty(colorVars[attr]);
+      }
+    });
+
+    var h = parseFloat(this.getAttribute('height'));
+    if (h > 0) {
+      pill.style.setProperty('--h', h + 'px');
+      pill.style.setProperty('--num-size', Math.round(h * 22 / 42) + 'px');
+      pill.style.setProperty('--lbl-size', Math.round(h * 20 / 42) + 'px');
+    } else {
+      pill.style.removeProperty('--h');
+      pill.style.removeProperty('--num-size');
+      pill.style.removeProperty('--lbl-size');
+    }
   }
 
   buildShapePath(leftW, rightW, H) {
@@ -111,17 +207,17 @@ class AkramPill extends HTMLElement {
     var d = [
       "M", x1, 0,
       "H", x2,
-      "C", x2 + a*notchHalf, 0, x3 - b*notchHalf, c*notchDepth, x3, notchDepth,
-      "C", x3 + b*notchHalf, c*notchDepth, x4 - a*notchHalf, 0, x4, 0,
+      "C", x2 + a * notchHalf, 0, x3 - b * notchHalf, c * notchDepth, x3, notchDepth,
+      "C", x3 + b * notchHalf, c * notchDepth, x4 - a * notchHalf, 0, x4, 0,
       "H", x5,
-      "C", x5 + kappa*capW, 0, total, ymid - kappa*ymid, total, ymid,
-      "C", total, ymid + kappa*ymid, x5 + kappa*capW, H, x5, H,
+      "C", x5 + kappa * capW, 0, total, ymid - kappa * ymid, total, ymid,
+      "C", total, ymid + kappa * ymid, x5 + kappa * capW, H, x5, H,
       "H", x4,
-      "C", x4 - a*notchHalf, H, x3 + b*notchHalf, H - c*notchDepth, x3, H - notchDepth,
-      "C", x3 - b*notchHalf, H - c*notchDepth, x2 + a*notchHalf, H, x2, H,
+      "C", x4 - a * notchHalf, H, x3 + b * notchHalf, H - c * notchDepth, x3, H - notchDepth,
+      "C", x3 - b * notchHalf, H - c * notchDepth, x2 + a * notchHalf, H, x2, H,
       "H", x1,
-      "C", x1 - kappa*capW, H, 0, ymid + kappa*ymid, 0, ymid,
-      "C", 0, ymid - kappa*ymid, x1 - kappa*capW, 0, x1, 0,
+      "C", x1 - kappa * capW, H, 0, ymid + kappa * ymid, 0, ymid,
+      "C", 0, ymid - kappa * ymid, x1 - kappa * capW, 0, x1, 0,
       "Z"
     ].join(" ");
 
@@ -129,23 +225,37 @@ class AkramPill extends HTMLElement {
   }
 
   drawPill() {
-    var pill = this.shadowRoot.querySelector(".stat-pill");
+    var pill = this.pillEl;
     if (!pill) return;
-    var num = pill.querySelector(".num");
-    var lbl = pill.querySelector(".lbl");
+
     var svg = pill.querySelector("svg.shape");
     var path = svg.querySelector("path");
-    var H = pill.clientHeight || 42;
+    var H = this.sizes.h || pill.clientHeight || 42;
 
-    var leftW = num.offsetWidth || 50;
-    var rightW = lbl.offsetWidth || 150;
+    var minCell = H * 230 / 300;
+    this.numEl.style.minWidth = minCell + "px";
+    this.lblEl.style.minWidth = minCell + "px";
+
+    var leftW = this.sizes.num || this.numEl.offsetWidth || 50;
+    var rightW = this.sizes.lbl || this.lblEl.offsetWidth || 150;
 
     var shape = this.buildShapePath(leftW, rightW, H);
     svg.setAttribute("viewBox", "0 0 " + shape.total + " " + H);
     path.setAttribute("d", shape.d);
-
-    pill.style.width = shape.total + "px";
   }
 }
 
-customElements.define('akram-pill', AkramPill);
+AkramPill.observedAttributes.forEach(function (attr) {
+  var prop = attr.replace(/-([a-z])/g, function (m, ch) { return ch.toUpperCase(); });
+  Object.defineProperty(AkramPill.prototype, prop, {
+    get: function () { return this.getAttribute(attr); },
+    set: function (value) {
+      if (value === null || value === undefined) this.removeAttribute(attr);
+      else this.setAttribute(attr, value);
+    }
+  });
+});
+
+if (!customElements.get('akram-pill')) {
+  customElements.define('akram-pill', AkramPill);
+}
