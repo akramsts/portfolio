@@ -1,3 +1,5 @@
+window.name = 'PortfolioTab';
+
 (function () {
   var year = document.getElementById('current-year');
   if (year) year.textContent = new Date().getFullYear();

@@ -146,6 +146,7 @@ section {
 
 .hero {
   position: relative;
+  padding-top: 64px;
   min-height: 92vh;
   min-height: 92svh;
   display: flex;
@@ -493,6 +494,7 @@ footer {
 
 @media (max-width: 680px) {
   .wrap { padding: 0 20px; }
+  .hero { padding-top: 48px; }
   section { padding: 64px 0; }
   h1 { letter-spacing: -1px; }
   akram-pill:not(:defined) { height: 38px; }
