@@ -9,7 +9,7 @@
   --ink: #f4f2ee;
   --ink-muted: #8d8fa3;
   --line: #232438;
-  --logo-size: 128px; /* change this one number to resize all project logos */
+  --logo-size: 128px;
   color-scheme: dark;
 }
 
@@ -321,7 +321,8 @@ akram-pill:not(:defined) {
 }
 
 .p-runner .proj-visual,
-.p-vsave .proj-visual {
+.p-vsearch .proj-visual,
+.p-nd .proj-visual {
   order: 2;
 }
 
@@ -355,6 +356,7 @@ akram-pill:not(:defined) {
 .p-runner .proj-visual::before,
 .p-nd .proj-visual::before { background: radial-gradient(circle at 30% 30%, rgba(124, 108, 255, 0.28), transparent 65%); }
 .p-vsearch .proj-visual::before { background: radial-gradient(circle at 30% 30%, rgba(61, 220, 151, 0.25), transparent 65%); }
+.p-gree .proj-visual::before { background: radial-gradient(circle at 30% 30%, rgba(255, 201, 40, 0.25), transparent 65%); }
 .p-vsave .proj-visual::before { background: radial-gradient(circle at 30% 30%, rgba(255, 194, 60, 0.28), transparent 65%); }
 
 .proj-body {
@@ -502,7 +504,8 @@ footer {
 
   .project { grid-template-columns: 1fr; }
   .p-runner .proj-visual,
-  .p-vsave .proj-visual { order: 0; }
+  .p-vsearch .proj-visual,
+  .p-nd .proj-visual { order: 0; }
   .proj-visual { min-height: 160px; padding: 28px; }
   .proj-body { padding: 28px; }
   .proj-links a { padding: 6px 0; }
